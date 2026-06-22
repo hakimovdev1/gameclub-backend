@@ -17,6 +17,10 @@ export const appConfig = registerAs('app', () => ({
     .split(',')
     .map((o) => o.trim())
     .filter(Boolean),
+  // Number of reverse-proxy hops to trust for X-Forwarded-* (client IP and
+  // protocol). Coolify/Traefik terminates TLS one hop in front of the app,
+  // so the default of 1 is correct; raise it only for additional proxies.
+  trustProxy: parseInt(process.env.TRUST_PROXY ?? '1', 10),
 }));
 
 export const databaseConfig = registerAs('database', () => ({

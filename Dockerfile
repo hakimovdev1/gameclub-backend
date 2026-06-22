@@ -28,9 +28,13 @@ USER node
 COPY --chown=node:node --from=build /app/node_modules ./node_modules
 COPY --chown=node:node --from=build /app/dist ./dist
 COPY --chown=node:node --from=build /app/package.json ./package.json
+COPY --chown=node:node docker-entrypoint.sh ./docker-entrypoint.sh
 
 EXPOSE 4040
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||4040)+'/api/v1/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
 
+# Apply pending migrations (and optionally seed the owner) on boot, then run
+# the app as PID 1. Invoked via `sh` so no executable bit is required.
+ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
 CMD ["node", "dist/main.js"]

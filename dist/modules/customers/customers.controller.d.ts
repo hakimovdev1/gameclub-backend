@@ -1,12 +1,12 @@
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { PaginationQueryDto } from '../../common/dto/pagination.dto';
+import { ListCustomersQueryDto } from './dto/list-customers.dto';
 export declare class CustomersController {
     private readonly customers;
     constructor(customers: CustomersService);
     create(dto: CreateCustomerDto): Promise<import("./entities/customer.entity").Customer>;
-    findAll(query: PaginationQueryDto, search?: string): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("./entities/customer.entity").Customer>>;
+    findAll(query: ListCustomersQueryDto): Promise<import("../../common/dto/pagination.dto").PaginatedResult<import("./entities/customer.entity").Customer>>;
     findOne(id: string): Promise<import("./entities/customer.entity").Customer & {
         debtBalance: number;
     }>;

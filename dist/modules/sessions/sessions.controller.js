@@ -19,11 +19,10 @@ const sessions_service_1 = require("./sessions.service");
 const start_session_dto_1 = require("./dto/start-session.dto");
 const extend_session_dto_1 = require("./dto/extend-session.dto");
 const end_session_dto_1 = require("./dto/end-session.dto");
-const session_entity_1 = require("./entities/session.entity");
+const list_sessions_dto_1 = require("./dto/list-sessions.dto");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const role_enum_1 = require("../../common/enums/role.enum");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
-const pagination_dto_1 = require("../../common/dto/pagination.dto");
 const audit_decorator_1 = require("../audit/audit.decorator");
 let SessionsController = class SessionsController {
     sessions;
@@ -33,8 +32,11 @@ let SessionsController = class SessionsController {
     start(dto, user) {
         return this.sessions.start(dto, { actorId: user.sub });
     }
-    findAll(query, status, customerId) {
-        return this.sessions.findAll(query, { status, customerId });
+    findAll(query) {
+        return this.sessions.findAll(query, {
+            status: query.status,
+            customerId: query.customerId,
+        });
     }
     active() {
         return this.sessions.findActive();
@@ -68,14 +70,10 @@ __decorate([
 ], SessionsController.prototype, "start", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiQuery)({ name: 'status', required: false, enum: session_entity_1.SessionStatus }),
-    (0, swagger_1.ApiQuery)({ name: 'customerId', required: false }),
     (0, swagger_1.ApiOperation)({ summary: 'List sessions' }),
     __param(0, (0, common_1.Query)()),
-    __param(1, (0, common_1.Query)('status')),
-    __param(2, (0, common_1.Query)('customerId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [pagination_dto_1.PaginationQueryDto, String, String]),
+    __metadata("design:paramtypes", [list_sessions_dto_1.ListSessionsQueryDto]),
     __metadata("design:returntype", void 0)
 ], SessionsController.prototype, "findAll", null);
 __decorate([

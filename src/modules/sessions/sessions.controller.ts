@@ -7,24 +7,18 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SessionsService } from './sessions.service';
 import { StartSessionDto } from './dto/start-session.dto';
 import { ExtendSessionDto } from './dto/extend-session.dto';
 import { EndSessionDto } from './dto/end-session.dto';
-import { SessionStatus } from './entities/session.entity';
+import { ListSessionsQueryDto } from './dto/list-sessions.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/enums/role.enum';
 import {
   CurrentUser,
   AuthenticatedUser,
 } from '../../common/decorators/current-user.decorator';
-import { PaginationQueryDto } from '../../common/dto/pagination.dto';
 import { Audited } from '../audit/audit.decorator';
 
 @ApiTags('sessions')
@@ -42,15 +36,12 @@ export class SessionsController {
   }
 
   @Get()
-  @ApiQuery({ name: 'status', required: false, enum: SessionStatus })
-  @ApiQuery({ name: 'customerId', required: false })
   @ApiOperation({ summary: 'List sessions' })
-  findAll(
-    @Query() query: PaginationQueryDto,
-    @Query('status') status?: SessionStatus,
-    @Query('customerId') customerId?: string,
-  ) {
-    return this.sessions.findAll(query, { status, customerId });
+  findAll(@Query() query: ListSessionsQueryDto) {
+    return this.sessions.findAll(query, {
+      status: query.status,
+      customerId: query.customerId,
+    });
   }
 
   @Get('active')

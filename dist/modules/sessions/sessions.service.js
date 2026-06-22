@@ -116,7 +116,7 @@ let SessionsService = class SessionsService {
         const { session: result, debtEntry } = await this.dataSource.transaction(async (manager) => {
             const session = await this.lockActive(manager, id);
             const due = this.pricing.finalize(session, endedAt);
-            const paid = money_1.Money.fromMinor(dto.amountPaid);
+            const paid = dto.amountPaid != null ? money_1.Money.fromMinor(dto.amountPaid) : due;
             if (paid.greaterThan(due)) {
                 throw new domain_exception_1.BusinessRuleException('OVERPAYMENT', 'Amount paid exceeds the amount due; give change instead', { due: due.value, paid: paid.value });
             }

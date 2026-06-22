@@ -18,9 +18,9 @@ const swagger_1 = require("@nestjs/swagger");
 const customers_service_1 = require("./customers.service");
 const create_customer_dto_1 = require("./dto/create-customer.dto");
 const update_customer_dto_1 = require("./dto/update-customer.dto");
+const list_customers_dto_1 = require("./dto/list-customers.dto");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const role_enum_1 = require("../../common/enums/role.enum");
-const pagination_dto_1 = require("../../common/dto/pagination.dto");
 const audit_decorator_1 = require("../audit/audit.decorator");
 let CustomersController = class CustomersController {
     customers;
@@ -30,8 +30,8 @@ let CustomersController = class CustomersController {
     create(dto) {
         return this.customers.create(dto);
     }
-    findAll(query, search) {
-        return this.customers.findAll(query, search);
+    findAll(query) {
+        return this.customers.findAll(query, query.search);
     }
     findOne(id) {
         return this.customers.getProfile(id);
@@ -57,12 +57,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)(role_enum_1.Role.CASHIER),
-    (0, swagger_1.ApiQuery)({ name: 'search', required: false }),
     (0, swagger_1.ApiOperation)({ summary: 'List/search customers' }),
     __param(0, (0, common_1.Query)()),
-    __param(1, (0, common_1.Query)('search')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [pagination_dto_1.PaginationQueryDto, String]),
+    __metadata("design:paramtypes", [list_customers_dto_1.ListCustomersQueryDto]),
     __metadata("design:returntype", void 0)
 ], CustomersController.prototype, "findAll", null);
 __decorate([

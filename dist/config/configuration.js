@@ -11,6 +11,7 @@ exports.appConfig = (0, config_1.registerAs)('app', () => ({
         .split(',')
         .map((o) => o.trim())
         .filter(Boolean),
+    trustProxy: parseInt(process.env.TRUST_PROXY ?? '1', 10),
 }));
 exports.databaseConfig = (0, config_1.registerAs)('database', () => ({
     host: process.env.DB_HOST ?? 'localhost',

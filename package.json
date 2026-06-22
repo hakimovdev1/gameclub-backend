@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -22,6 +25,7 @@
     "migration:generate": "pnpm run typeorm migration:generate src/database/migrations/Schema",
     "migration:create": "typeorm-ts-node-commonjs migration:create src/database/migrations/Migration",
     "migration:run": "pnpm run typeorm migration:run",
+    "migration:run:prod": "typeorm migration:run -d dist/database/data-source.js",
     "migration:revert": "pnpm run typeorm migration:revert",
     "seed": "ts-node src/database/seed.ts",
     "seed:prod": "node dist/database/seed.js"

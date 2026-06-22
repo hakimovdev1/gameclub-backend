@@ -6,16 +6,11 @@ import {
   Patch,
   Query,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/enums/role.enum';
-import { PaginationQueryDto } from '../../common/dto/pagination.dto';
+import { ListNotificationsQueryDto } from './dto/list-notifications.dto';
 
 @ApiTags('notifications')
 @ApiBearerAuth()
@@ -25,13 +20,9 @@ export class NotificationsController {
   constructor(private readonly notifications: NotificationsService) {}
 
   @Get()
-  @ApiQuery({ name: 'unreadOnly', required: false, type: Boolean })
   @ApiOperation({ summary: 'List notifications' })
-  findAll(
-    @Query() query: PaginationQueryDto,
-    @Query('unreadOnly') unreadOnly?: string,
-  ) {
-    return this.notifications.findAll(query, unreadOnly === 'true');
+  findAll(@Query() query: ListNotificationsQueryDto) {
+    return this.notifications.findAll(query, query.unreadOnly === 'true');
   }
 
   @Patch(':id/read')

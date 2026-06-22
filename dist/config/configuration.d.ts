@@ -4,12 +4,14 @@ export declare const appConfig: (() => {
     apiPrefix: string;
     defaultVersion: string;
     corsOrigins: string[];
+    trustProxy: number;
 }) & import("@nestjs/config").ConfigFactoryKeyHost<{
     env: string;
     port: number;
     apiPrefix: string;
     defaultVersion: string;
     corsOrigins: string[];
+    trustProxy: number;
 }>;
 export declare const databaseConfig: (() => {
     host: string;
@@ -51,12 +53,14 @@ export declare const configurations: (((() => {
     apiPrefix: string;
     defaultVersion: string;
     corsOrigins: string[];
+    trustProxy: number;
 }) & import("@nestjs/config").ConfigFactoryKeyHost<{
     env: string;
     port: number;
     apiPrefix: string;
     defaultVersion: string;
     corsOrigins: string[];
+    trustProxy: number;
 }>) | ((() => {
     host: string;
     port: number;

@@ -9,18 +9,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { ListCustomersQueryDto } from './dto/list-customers.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/enums/role.enum';
-import { PaginationQueryDto } from '../../common/dto/pagination.dto';
 import { Audited } from '../audit/audit.decorator';
 
 @ApiTags('customers')
@@ -39,13 +34,9 @@ export class CustomersController {
 
   @Get()
   @Roles(Role.CASHIER)
-  @ApiQuery({ name: 'search', required: false })
   @ApiOperation({ summary: 'List/search customers' })
-  findAll(
-    @Query() query: PaginationQueryDto,
-    @Query('search') search?: string,
-  ) {
-    return this.customers.findAll(query, search);
+  findAll(@Query() query: ListCustomersQueryDto) {
+    return this.customers.findAll(query, query.search);
   }
 
   @Get(':id')

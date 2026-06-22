@@ -169,7 +169,11 @@ export class SessionsService {
         const session = await this.lockActive(manager, id);
 
         const due = this.pricing.finalize(session, endedAt);
-        const paid = Money.fromMinor(dto.amountPaid);
+        // Default behaviour: settle in full at the moment of ending, so no
+        // debt is ever created automatically. An explicit amount is only
+        // honoured when the caller deliberately collects a partial payment.
+        const paid =
+          dto.amountPaid != null ? Money.fromMinor(dto.amountPaid) : due;
 
         if (paid.greaterThan(due)) {
           throw new BusinessRuleException(

@@ -18,14 +18,14 @@ const swagger_1 = require("@nestjs/swagger");
 const notifications_service_1 = require("./notifications.service");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const role_enum_1 = require("../../common/enums/role.enum");
-const pagination_dto_1 = require("../../common/dto/pagination.dto");
+const list_notifications_dto_1 = require("./dto/list-notifications.dto");
 let NotificationsController = class NotificationsController {
     notifications;
     constructor(notifications) {
         this.notifications = notifications;
     }
-    findAll(query, unreadOnly) {
-        return this.notifications.findAll(query, unreadOnly === 'true');
+    findAll(query) {
+        return this.notifications.findAll(query, query.unreadOnly === 'true');
     }
     async markRead(id) {
         await this.notifications.markRead(id);
@@ -39,12 +39,10 @@ let NotificationsController = class NotificationsController {
 exports.NotificationsController = NotificationsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiQuery)({ name: 'unreadOnly', required: false, type: Boolean }),
     (0, swagger_1.ApiOperation)({ summary: 'List notifications' }),
     __param(0, (0, common_1.Query)()),
-    __param(1, (0, common_1.Query)('unreadOnly')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [pagination_dto_1.PaginationQueryDto, String]),
+    __metadata("design:paramtypes", [list_notifications_dto_1.ListNotificationsQueryDto]),
     __metadata("design:returntype", void 0)
 ], NotificationsController.prototype, "findAll", null);
 __decorate([

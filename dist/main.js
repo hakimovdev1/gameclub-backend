@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./polyfills");
 const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
@@ -17,6 +18,7 @@ async function bootstrap() {
     });
     const config = app.get(config_1.ConfigService);
     const logger = new common_1.Logger('Bootstrap');
+    app.getHttpAdapter().getInstance().set('trust proxy', config.get('app.trustProxy') ?? 1);
     app.use((0, helmet_1.default)());
     app.use((0, compression_1.default)());
     app.use((0, cookie_parser_1.default)());
@@ -50,7 +52,7 @@ async function bootstrap() {
         swaggerOptions: { persistAuthorization: true },
     });
     const port = config.get('app.port') ?? 4040;
-    await app.listen(port);
+    await app.listen(port, '0.0.0.0');
     logger.log(`API ready on http://localhost:${port}/api/v1`);
     logger.log(`Swagger docs on http://localhost:${port}/docs`);
 }

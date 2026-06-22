@@ -1,3 +1,4 @@
+import './polyfills';
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -13,6 +14,11 @@ async function bootstrap(): Promise<void> {
   });
   const config = app.get(ConfigService);
   const logger = new Logger('Bootstrap');
+
+  // Behind a reverse proxy (Coolify/Traefik) TLS is terminated upstream, so
+  // trust the X-Forwarded-* headers. Without this, Secure cookies are dropped
+  // and rate limiting would bucket every client under the proxy's IP.
+  app.getHttpAdapter().getInstance().set('trust proxy', config.get<number>('app.trustProxy') ?? 1);
 
   // Security & transport hardening.
   app.use(helmet());
@@ -60,7 +66,8 @@ async function bootstrap(): Promise<void> {
   });
 
   const port = config.get<number>('app.port') ?? 4040;
-  await app.listen(port);
+  // Bind all interfaces so the container is reachable from the proxy network.
+  await app.listen(port, '0.0.0.0');
   logger.log(`API ready on http://localhost:${port}/api/v1`);
   logger.log(`Swagger docs on http://localhost:${port}/docs`);
 }

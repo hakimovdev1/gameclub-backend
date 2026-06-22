@@ -1,4 +1,4 @@
 export declare class EndSessionDto {
-    amountPaid: number;
+    amountPaid?: number;
     notes?: string;
 }

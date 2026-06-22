@@ -35,6 +35,9 @@ services:
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?set a strong refresh secret}
       COOKIE_SECURE: 'true'
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      # Optional: seed the first OWNER account on boot (idempotent).
+      SEED_OWNER_EMAIL: ${SEED_OWNER_EMAIL:-}
+      SEED_OWNER_PASSWORD: ${SEED_OWNER_PASSWORD:-}
     ports:
       - '${PORT:-4040}:4040'
 
