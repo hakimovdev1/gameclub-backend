@@ -1,0 +1,6 @@
+allowBuilds:
+  'bcrypt': true
+  '@scarf/scarf': true
+  '@nestjs/core': true
+  unrs-resolver: false
+  argon2: true
